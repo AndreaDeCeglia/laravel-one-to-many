@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Front Office</title>
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
-</head>
-<body>
+</head> --}}
+{{-- <body> --}}
     {{-- Inseriamo Vue --}}
-    <div id="root">
 
-    </div>
-    <script src="{{ asset('js/app.js') }}"></script>
-</body>
-</html>
+@extends('layouts.app')
+@section('content')
+    
+<div id="root">
+
+</div>
+
+<script src="{{ asset('js/app.js') }}"></script>
+@endsection
+{{-- </body> --}}
+{{-- </html> --}}
