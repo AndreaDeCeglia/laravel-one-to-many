@@ -28,7 +28,7 @@ Route::middleware('auth')
     ->group(function(){
         Route::get('/', 'HomeController@index')->name('index');
         //controllers per crud
-        Route::resource('/posts', PostController::class);
+        Route::resource('/post', PostController::class);
 });
 
 Route::get('{any?}', function(){

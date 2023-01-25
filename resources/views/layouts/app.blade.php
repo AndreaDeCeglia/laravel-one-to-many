@@ -33,7 +33,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <a href="{{ route('admin.post.index')}}">
+                            Lista Post 
+                        </a>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

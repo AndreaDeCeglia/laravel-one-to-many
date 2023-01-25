@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Post;
 
 class PostController extends Controller
 {
@@ -14,15 +15,17 @@ class PostController extends Controller
      */
     public function index()
     {
-        $userId = Auth::id();
-        $user = Auth::user();
+        //$userId = Auth::id();
+        //$user = Auth::user();
 
-        $data = [
-            'userId' => $userId,
-            'user' => $user
-        ];
+        $posts = Post::All();
 
-        return view('admin.post.index', $data );
+        // $data = [
+        //     'userId' => $userId,
+        //     'user' => $user
+        // ];
+
+        return view('admin.post.index', compact('posts') );
     }
 
     /**
@@ -32,7 +35,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.post.create');
     }
 
     /**
@@ -43,7 +46,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $new_post = new Post();
+        $new_post->fill($data);
+        $new_post->save();
+
+        return redirect()->route('admin.posts.show', $new_post->id);
     }
 
     /**
@@ -54,7 +63,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = Post::findOrFail($id);
+
+        return view('admin.post.show', compact('item'));
     }
 
     /**
@@ -65,7 +76,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Post::findOrFail($id);
+        return view('admin.post.edit', compact('item'));
     }
 
     /**
@@ -77,7 +89,11 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $item = Post::findOrFail($id);
+        $item->update($data);
+        
+        return redirect()->route('admin.post.show', $item->id);
     }
 
     /**
@@ -88,6 +104,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Post::findOrFail($id);
+        $item->delete();
+        
+        return redirect()->route('admin.post.index');
     }
 }
