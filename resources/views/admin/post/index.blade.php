@@ -5,7 +5,7 @@
 
     <div>
         <a class="btn btn-primary" href="{{ route('admin.post.create') }}">
-            NEW POST
+            NEW POST!!
         </a>
     </div>
 
