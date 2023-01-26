@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -18,7 +19,7 @@ class PostController extends Controller
         //$userId = Auth::id();
         //$user = Auth::user();
 
-        $posts = Post::All();
+        $posts = Post::with('category')->paginate(10);
 
         // $data = [
         //     'userId' => $userId,
@@ -35,7 +36,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.post.create');
+        $categories = Category::All();
+        
+        return view('admin.post.create', compact('categories'));
     }
 
     /**
@@ -64,8 +67,9 @@ class PostController extends Controller
     public function show($id)
     {
         $item = Post::findOrFail($id);
+        $categories = Category::All();
 
-        return view('admin.post.show', compact('item'));
+        return view('admin.post.show', compact('item', 'categories'));
     }
 
     /**
@@ -77,7 +81,8 @@ class PostController extends Controller
     public function edit($id)
     {
         $item = Post::findOrFail($id);
-        return view('admin.post.edit', compact('item'));
+        $categories = Category::All();
+        return view('admin.post.edit', compact('item', 'categories'));
     }
 
     /**

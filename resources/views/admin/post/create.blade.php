@@ -21,6 +21,18 @@
             <textarea name="description" class="form-control"></textarea>
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-control" name="category_id" id="">
+                <option value="">Seleziona la categoria</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Add Post</button>
 
     </form>

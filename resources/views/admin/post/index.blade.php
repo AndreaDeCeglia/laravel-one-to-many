@@ -20,6 +20,11 @@
                     <p class="card-text">
                         {{ $item->body }}
                     </p>
+                    <p>
+                        @if ( $item->category )
+                            {{ $item->category['name'] }}
+                        @endif
+                    </p>
                     <div class="d-flex justify-content-around align-items-center">
                         <a href="{{ route('admin.post.edit', $item->id) }}" class="btn btn-primary">
                             EDIT
