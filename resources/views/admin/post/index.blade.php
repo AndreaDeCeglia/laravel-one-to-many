@@ -25,6 +25,11 @@
                             {{ $item->category['name'] }}
                         @endif
                     </p>
+                    <p>
+                        @foreach ( $post->tags as $singoloTag)
+                            {{ $singoloTag->name }}
+                        @endforeach
+                    </p>
                     <div class="d-flex justify-content-around align-items-center">
                         <a href="{{ route('admin.post.edit', $item->id) }}" class="btn btn-primary">
                             EDIT
@@ -41,6 +46,10 @@
             </a>
         </div>
     @endforeach
+
+    <pre>
+        {{ dump( $posts[0]->tags ) }}
+    </pre>
 
 
 @endsection

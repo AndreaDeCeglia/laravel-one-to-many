@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -19,7 +20,7 @@ class PostController extends Controller
         //$userId = Auth::id();
         //$user = Auth::user();
 
-        $posts = Post::with('category')->paginate(10);
+        $posts = Post::with('category', 'tags')->paginate(10);
 
         // $data = [
         //     'userId' => $userId,
@@ -37,8 +38,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::All();
+        $tags = Tag::All();
         
-        return view('admin.post.create', compact('categories'));
+        return view('admin.post.create', compact('categories', 'tags'));
     }
 
     /**
@@ -54,6 +56,11 @@ class PostController extends Controller
         $new_post = new Post();
         $new_post->fill($data);
         $new_post->save();
+
+        //controllo se l'utente ha cliccato delle checkbox
+        if( array_key_exists('tags', $data) ){
+            $newPost->tags()->sync( $data['tags'] );
+        }
 
         return redirect()->route('admin.posts.show', $new_post->id);
     }
@@ -82,7 +89,10 @@ class PostController extends Controller
     {
         $item = Post::findOrFail($id);
         $categories = Category::All();
-        return view('admin.post.edit', compact('item', 'categories'));
+
+        $tags = Tag::All();
+        
+        return view('admin.post.edit', compact('item', 'categories', 'tags'));
     }
 
     /**
@@ -97,6 +107,14 @@ class PostController extends Controller
         $data = $request->all();
         $item = Post::findOrFail($id);
         $item->update($data);
+
+        //controlla se l'utente ha cliccato o erano già selezionate delle checkbox
+        if(array_key_exists('tags', $data)){
+            $item->tags()->sync( $data['tags'] );
+        }else{
+            //non ci sono checkbox selezionate
+            $item->tags()->sync([]);
+        }
         
         return redirect()->route('admin.post.show', $item->id);
     }
@@ -110,6 +128,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $item = Post::findOrFail($id);
+        $item->tags()->sync([]);
         $item->delete();
         
         return redirect()->route('admin.post.index');
